@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            background-color: black;
+            font-family: "Poppins", sans-serif;
+            font-size: 18px;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+        }
+        .form-control, .buttons{
+            display: flex;
+        }
+        .form-control{
+            flex-direction: column;
+            gap:.5rem;
+            margin: auto;
+            border-bottom: 1px solid gray;
+            padding: 1rem;
+            width: 100%;
+            height: 100%;
+        }
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background-color: black;
+            width: 70%;
+            margin: auto;
+        }
+        
+        label, span, h1, p {
+            color: white;
+            font-weight: 600;
+        }
+        h1{
+            grid-column: 1/3;
+        }
+        input{
+            padding: .5rem;
+            border-radius: .3rem;
+        }
+        .buttons {
+            gap:1rem;
+            justify-content: center;
+            padding:1rem;
+            grid-column: 1/3;
+        }
+        button {
+            padding: .5rem 1rem;
+            border-radius: .3rem;
+            border: none;
+            color: white;
+            font-size: 25px;
+        }
+        .reset-btn{
+            background-color: darkgray;
+        }
+        #submit{
+            background-color: rebeccapurple;
+        }
+        #results {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            padding: 1rem 5rem;
+        }
+        #picture {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <form id="form" action="/" method="post">
+        <h1>Form:</h1>
+        <div class="form-control">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" placeholder="Your name" required>
+        </div>
+        <div class="form-control">
+            <label for="email">E-mail:</label>
+            <input type="email" name="email" id="email" placeholder="Your email" required>
+        </div>
+        <div class="form-control">
+            <label for="">Password:</label>
+            <input type="password" name="password" placeholder="*******" required>
+        </div>
+        <div class="form-control">
+            <label for="age">Age:</label>
+            <input type="number" name="age" id="age" min=1 max=125>
+        </div>
+        <div class="form-control">
+            <label for="phone">Phone:</label>
+            <input type="tel" name="phone" id="phone" placeholder="604-604-6046" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
+        </div>
+        <div class="form-control">
+            <label for="birthdate">Birthdate:</label>
+            <input type="date" name="birthdate" id="birthdate">
+        </div>
+        <div class="form-control">
+            <span>Gender</span>
+                <div>
+                    <label for="male">M</label>
+                    <input type="radio" name="gender" id="male" value="M">
+                    <label for="female">F</label>
+                    <input type="radio" name="gender" id="female" value="F">
+                </div>
+            
+        </div>
+        <div class="form-control">
+            <label for="country">Country:</label>
+            <select name="country" id="country">
+                <option value="Brazil">Brazil</option>
+                <option value="Canada">Canada</option>
+                <option value="Japan">Japan</option>
+                <option value="Turkey">Turkey</option>
+                <option value="US">US</option>
+            </select>
+        </div>
+        <div class="form-control">
+            <label for="picture">Picture:</label>
+            <input type="file" name="picture" id="picture">
+        </div>
+        <div class="form-control">
+            <div>
+                <label for="terms">I agree with the <a href="#">"Terms and Conditions"</a>:</label>
+                <input type="checkbox" name="terms" id="terms" required>
+            </div>
+            <div>
+                <label for="newsletter">Newsletter:</label>
+                <input type="checkbox" name="newsletter" id="newsletter">
+            </div>
+        </div>
+        <div class="buttons">
+            <button type="reset" class="reset-btn">Reset</button>
+            <button type="submit" id="submit">Submit</button>
+        </div>
+    </form>
+    <div id="results"></div>
+    <script>
+        const results = document.getElementById("results");
+        //Add event listener for submitting the form
+        const form = document.getElementById("form");
+        form.addEventListener("submit", function(e){
+            e.preventDefault();
+            results.innerHTML = "";
+            const params = new FormData(e.target);
+            // params = {name: "John", email:"john@doe.com"...}
+            console.log(params);
+            //Create validations
+
+            //Loop through params object
+            // [[key, value],[key, value],[key, value]]
+            console.log(params.entries().toString());
+            for (let pair of params.entries()){
+                //parentArray[0] = [key, value] = pair
+                // [  key    ,    value    ] 
+                //   pair[0]     pair[1]
+                let pKey = document.createElement('p');
+                let pValue = document.createElement('p');
+                if(pair[1]){
+                    let value = "";
+                    switch(pair[0]){
+                        
+                        case"picture":
+                        console.log(pair[1]);
+                            value = pair[1].name? pair[1].name: "No file chosen";
+                            break;
+                        default:
+                            value = pair[1];
+                    }
+                    pKey.textContent = `${pair[0]} : `;
+                    pValue.textContent = value;
+                    results.appendChild(pKey);
+                    results.appendChild(pValue);
+
+                }
+            }
+            // params.forEach(param => {
+            //     console.log(param)
+            // })
+        })
+        //Use switch for different types of input to get values
+        //Append form results in results div
+        //Bonus: add styling to the page
+    </script>
+</body>
+</html>
